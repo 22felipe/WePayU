@@ -10,6 +10,8 @@ public class Facade {
         sistema.zerarSistema();
     }
 
+    public void encerrarSistema() { sistema.zerarSistema();}
+
     public String getAtributoEmpregado(String emp, String atributo) throws EmpregadoNaoExisteException {
         return sistema.getAtributo(emp, atributo);
     }
@@ -21,6 +23,6 @@ public class Facade {
 
     //criar empregado comissionado
     public String criarEmpregado(String nome, String endereco, String tipo, String salario, String comissao) throws EmpregadoNaoExisteException {
-        return sistema.criarEmpregado(nome, endereco, tipo, salario);
+        return sistema.criarEmpregado(nome, endereco, tipo, salario, comissao);
     }
 }

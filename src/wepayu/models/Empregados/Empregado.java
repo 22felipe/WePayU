@@ -1,4 +1,4 @@
-package wepayu.models;
+package wepayu.models.Empregados;
 
 import wepayu.Exception.EmpregadoNaoExisteException;
 
@@ -43,7 +43,7 @@ public class Empregado {
             case "sindicalizado":
                 return String.valueOf(sindicalizado);
             default:
-                throw new RuntimeException("Atributo inválido.");
+                throw new IllegalArgumentException("Atributo nao existe.");
         }
     }
 

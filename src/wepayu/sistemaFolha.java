@@ -1,7 +1,10 @@
 package wepayu;
 
 import wepayu.Exception.EmpregadoNaoExisteException;
-import wepayu.models.Empregado;
+import wepayu.models.Empregados.Empregado;
+import wepayu.models.Empregados.EmpregadoAssalariado;
+import wepayu.models.Empregados.EmpregadoComissionado;
+import wepayu.models.Empregados.EmpregadoHorista;
 
 
 import java.util.HashMap;
@@ -18,6 +21,10 @@ public class sistemaFolha {
     public String getAtributo(String empId, String atributo) throws wepayu.Exception.EmpregadoNaoExisteException {
         Empregado e = empregados.get(empId);
 
+        if (empId == null || empId.trim().isEmpty()) {
+            throw new RuntimeException("Identificacao do empregado nao pode ser nula.");
+        }
+
         if (e == null) {
             throw new wepayu.Exception.EmpregadoNaoExisteException();
         }
@@ -27,6 +34,8 @@ public class sistemaFolha {
 
     public String criarEmpregado (String nome, String endereco, String tipo, String salarioStr) throws EmpregadoNaoExisteException {
 
+        if("comissionado".equalsIgnoreCase(tipo))
+            throw new RuntimeException(("Tipo nao aplicavel."));
         if (nome == null || nome.isEmpty())
             throw new RuntimeException("Nome nao pode ser nulo.");
         if (endereco == null || endereco.isEmpty())
@@ -48,14 +57,65 @@ public class sistemaFolha {
 
         if (salario < 0) throw new RuntimeException("Salario deve ser nao-negativo.");
 
-        //cria um novo empregado com os parametros passados
-        Empregado e = new Empregado(nome, endereco, tipo, salario);
-        empregados.put(e.getEmp(), e); //colocar o empregado no Hashmap
-        return e.getEmp();// retorna o id unico;
+        Empregado e;
 
+        // Decide qual tipo de empregado criar
+        switch (tipo.toLowerCase()) {
+            case "assalariado":
+                e = new EmpregadoAssalariado(nome, endereco, "assalariado", salario);
+                break;
+            case "horista":
+                e = new EmpregadoHorista(nome, endereco,"horista", salario); // aqui salário = valor hora
+                break;
+            default:
+                throw new RuntimeException("Tipo invalido.");
+        }
+
+        empregados.put(e.getEmp(), e);
+        return e.getEmp(); // retorna o id único
     }
 
+    //criarEmpregadoComissionado
+    public String criarEmpregado (String nome, String endereco, String tipo, String salarioStr, String comissaoStr) throws EmpregadoNaoExisteException {
+
+        if("horista".equalsIgnoreCase(tipo))
+            throw new RuntimeException(("Tipo nao aplicavel."));
+        if("assalariado".equalsIgnoreCase(tipo))
+            throw new RuntimeException(("Tipo nao aplicavel."));
+        if (nome == null || nome.isEmpty())
+            throw new RuntimeException("Nome nao pode ser nulo.");
+        if (endereco == null || endereco.isEmpty())
+            throw new RuntimeException("Endereco nao pode ser nulo.");
+        if (tipo == null || tipo.isEmpty())
+            throw new RuntimeException("Tipo invalido.");
+        if (salarioStr == null || salarioStr.isEmpty())
+            throw new RuntimeException("Salario nao pode ser nulo.");
+        if (comissaoStr == null || comissaoStr.isEmpty())
+            throw new RuntimeException("Comissao nao pode ser nula.");
+
+        // Substitui vírgula por ponto em salario
+        salarioStr = salarioStr.replace(',', '.');
+
+        double salario;
+        try {
+            salario = Double.parseDouble(salarioStr);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Salario deve ser numerico.");
+        }
+
+        if (salario < 0) throw new RuntimeException("Salario deve ser nao-negativo.");
+
+        // Substitui vírgula por ponto em comissao
+        comissaoStr = comissaoStr.replace(',', '.');
+
+        Empregado e;
+
+        e = new EmpregadoComissionado(nome, endereco, "comissionado",salario, comissaoStr);
 
 
+        empregados.put(e.getEmp(), e);
+        return e.getEmp(); // retorna o id único
+    }
 
 }
+
