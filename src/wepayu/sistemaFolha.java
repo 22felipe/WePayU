@@ -121,8 +121,11 @@ public class sistemaFolha {
     }
 
     public String getEmpregadoPorNome(String nome, int indice) {
-        if (nome == null || nome.trim().isEmpty()) {
+        if (nome == null) {
             throw new RuntimeException("Nome nao pode ser nulo.");
+        }
+        if (nome.trim().isEmpty()) {
+            throw new RuntimeException("Empregado nao existe.");
         }
 
         int count = 0;
@@ -137,6 +140,18 @@ public class sistemaFolha {
         throw new RuntimeException("Nao ha empregado com esse nome.");
     }
 
+    public String removerEmpregado(String emp) {
+        if (emp == null || emp.trim().isEmpty()) {
+            throw new RuntimeException("Identificacao do empregado nao pode ser nula.");
+        }
+
+        Empregado removido = empregados.remove(emp);
+        if (removido == null) {
+            throw new RuntimeException("Empregado nao existe.");
+        }
+
+        return emp; // retorna o ID do empregado removido
+    }
 
 }
 

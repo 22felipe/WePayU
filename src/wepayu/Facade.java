@@ -39,5 +39,9 @@ public class Facade {
         return  sistema.getEmpregadoPorNome(nome, indice);
     }
 
+    public String removerEmpregado (String emp){
+        return sistema.removerEmpregado(emp);
+    }
+
 
 }
