@@ -8,9 +8,11 @@ import wepayu.models.Empregados.EmpregadoHorista;
 
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class sistemaFolha {
-    private   HashMap <String, Empregado> empregados =  new HashMap<>(); //tenho que ver o public
+    //private   HashMap <String, Empregado> empregados =  new HashMap<>();
+    private LinkedHashMap<String, Empregado> empregados = new LinkedHashMap<>();
 
     //Limpa o sistema
     public void zerarSistema() {
@@ -32,6 +34,7 @@ public class sistemaFolha {
         return e.getAtributo(atributo); // Chamaremos outra versão de getAtributo no próprio Empregado
     }
 
+    //criarEmpregado assalariado e horista
     public String criarEmpregado (String nome, String endereco, String tipo, String salarioStr) throws EmpregadoNaoExisteException {
 
         if("comissionado".equalsIgnoreCase(tipo))
@@ -116,6 +119,24 @@ public class sistemaFolha {
         empregados.put(e.getEmp(), e);
         return e.getEmp(); // retorna o id único
     }
+
+    public String getEmpregadoPorNome(String nome, int indice) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new RuntimeException("Nome nao pode ser nulo.");
+        }
+
+        int count = 0;
+        for (Empregado e : empregados.values()) {
+            if (e.getNome().contains(nome)) {
+                count++;
+                if (count == indice) {
+                    return e.getEmp();
+                }
+            }
+        }
+        throw new RuntimeException("Nao ha empregado com esse nome.");
+    }
+
 
 }
 

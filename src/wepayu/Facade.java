@@ -6,6 +6,14 @@ public class Facade {
 
     private sistemaFolha sistema = new sistemaFolha();
 
+    public Facade() throws EmpregadoNaoExisteException {
+        criarEmpregado("Joao da Silva", "Rua dos Jooes, 333 - Campina Grande", "horista", "23,00");
+        criarEmpregado("Joao da Silva", "Rua dos Jooes, 333 - Campina Grande", "horista", "23,00");
+        criarEmpregado("Joao da Silva", "Rua dos Jooes, 333 - Campina Grande", "horista", "23,32");
+        criarEmpregado("Mariazinha", "Rua das Marias, 333 - Campina Grande", "assalariado", "2300,45");
+        criarEmpregado("Gaiato Vendedor", "Rua dos Bufoes, 333 - Campina Grande", "comissionado", "2300,45", "0,05");
+
+    }
     public void zerarSistema() {
         sistema.zerarSistema();
     }
@@ -25,4 +33,10 @@ public class Facade {
     public String criarEmpregado(String nome, String endereco, String tipo, String salario, String comissao) throws EmpregadoNaoExisteException {
         return sistema.criarEmpregado(nome, endereco, tipo, salario, comissao);
     }
+
+    public String getEmpregadoPorNome(String nome, int indice){
+        return  sistema.getEmpregadoPorNome(nome, indice);
+    }
+
+
 }
