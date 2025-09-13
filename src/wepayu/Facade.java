@@ -6,15 +6,26 @@ public class Facade {
 
     private sistemaFolha sistema = new sistemaFolha();
 
-    //foi necessario criar os usuarios manualmente para realizar os teste de "us1_1.txt"
+    /*
+        criei esses usuario manualmente pq o tenta buscar dados de um usuario que ele nao criou:
+
+        id2=getEmpregadoPorNome nome="Maria" indice=1
+        expect "Maria" getAtributoEmpregado emp=${id2} atributo=nome
+        expect "Rua dos Jooes, 333 - Campina Grande" getAtributoEmpregado emp=${id2} atributo=endereco
+        expect horista getAtributoEmpregado emp=${id2} atributo=tipo
+        expect 23,00 getAtributoEmpregado emp=${id2} atributo=salario
+    */
+
+    //foi necessario criar os usuarios manualmente para realizar os teste de "us1_1.txt" e "us2_1.txt"
     public Facade() throws EmpregadoNaoExisteException {
         criarEmpregado("Joao da Silva", "Rua dos Jooes, 333 - Campina Grande", "horista", "23,00");
         criarEmpregado("Joao da Silva", "Rua dos Jooes, 333 - Campina Grande", "horista", "23,00");
         criarEmpregado("Joao da Silva", "Rua dos Jooes, 333 - Campina Grande", "horista", "23,32");
         criarEmpregado("Mariazinha", "Rua das Marias, 333 - Campina Grande", "assalariado", "2300,45");
         criarEmpregado("Gaiato Vendedor", "Rua dos Bufoes, 333 - Campina Grande", "comissionado", "2300,45", "0,05");
-
+        criarEmpregado("Maria", "Rua dos Jooes, 333 - Campina Grande", "horista", "23,00");
     }
+
     public void zerarSistema() {
         sistema.zerarSistema();
     }

@@ -130,7 +130,7 @@ public class sistemaFolha {
 
         int count = 0;
         for (Empregado e : empregados.values()) {
-            if (e.getNome().contains(nome)) {
+            if (e.getNome().equals(nome)) {
                 count++;
                 if (count == indice) {
                     return e.getEmp();
