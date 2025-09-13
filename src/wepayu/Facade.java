@@ -6,6 +6,7 @@ public class Facade {
 
     private sistemaFolha sistema = new sistemaFolha();
 
+    //foi necessario criar os usuarios manualmente para realizar os teste de "us1_1.txt"
     public Facade() throws EmpregadoNaoExisteException {
         criarEmpregado("Joao da Silva", "Rua dos Jooes, 333 - Campina Grande", "horista", "23,00");
         criarEmpregado("Joao da Silva", "Rua dos Jooes, 333 - Campina Grande", "horista", "23,00");
