@@ -7,14 +7,14 @@ public class Main {
         String facade = "wepayu.Facade";
 
 
-        //EasyAccept.main(new String[]{facade, "tests/us1.txt"}); //concluido
-        //EasyAccept.main(new String[]{facade, "tests/us1_1.txt"}); //concluido
-        //EasyAccept.main(new String[]{facade, "tests/us2.txt"}); //concluido
-        //EasyAccept.main(new String[]{facade, "tests/us2_1.txt"});  //faltou um teste para a concluir
+        /*EasyAccept.main(new String[]{facade, "tests/us1.txt"}); //concluido
+        EasyAccept.main(new String[]{facade, "tests/us1_1.txt"}); //concluido
+        EasyAccept.main(new String[]{facade, "tests/us2.txt"}); //concluido
+        EasyAccept.main(new String[]{facade, "tests/us2_1.txt"});  //faltou um teste para a concluir
+        EasyAccept.main(new String[]{facade, "tests/us3.txt"}); //concluido*/
 
-        EasyAccept.main(new String[]{facade, "tests/us3.txt"});
-//        EasyAccept.main(new String[]{facade, "tests/us3_1.txt"});
-//        EasyAccept.main(new String[]{facade, "tests/us4.txt"});
+        //EasyAccept.main(new String[]{facade, "tests/us3_1.txt"});
+        EasyAccept.main(new String[]{facade, "tests/us4.txt"});
 //        EasyAccept.main(new String[]{facade, "tests/us4_1.txt"});
 //
 //        EasyAccept.main(new String[]{facade, "tests/us5.txt"});

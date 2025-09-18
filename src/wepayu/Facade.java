@@ -64,9 +64,15 @@ public class Facade {
         return sistema.getHorasExtrasTrabalhadas(empId, dataInicial, dataFinal);
     }
 
+    public String getVendasRealizadas(String empId, String dataInicial, String dataFinal) throws EmpregadoNaoExisteException {
+        return sistema.getVendasRealizadas(empId, dataInicial, dataFinal);
+    }
 
     public void lancaCartao(String empId, String data, String horas) throws EmpregadoNaoExisteException {
         sistema.lancaCartao(empId, data, horas);
     }
 
+    public void lancaVenda (String empId, String data, String valor) throws EmpregadoNaoExisteException {
+        sistema.lancaVenda(empId, data, valor);
+    }
 }

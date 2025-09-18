@@ -7,6 +7,8 @@ import wepayu.models.Empregados.EmpregadoComissionado;
 import wepayu.models.Empregados.EmpregadoHorista;
 
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -211,6 +213,27 @@ public class sistemaFolha {
         return horasStr;
     }
 
+    public String getVendasRealizadas (String emp, String dataInicial, String dataFinal){
+        Empregado e = empregados.get(emp);
+        if (!(e instanceof EmpregadoComissionado)) {
+            throw new RuntimeException("Empregado nao eh comissionado.");
+        }
+
+        LocalDate ini = parseData(dataInicial, "Data inicial invalida.");
+        LocalDate fim = parseData(dataFinal, "Data final invalida.");
+        if (ini.isAfter(fim)) {
+            throw new RuntimeException("Data inicial nao pode ser posterior aa data final.");
+        }
+
+        double vendas = ((EmpregadoComissionado) e).getVendas(ini, fim);
+        // formatador para padrão brasileiro (vírgula decimal, ponto milhar)
+        DecimalFormat df = new DecimalFormat("#0.00", new DecimalFormatSymbols(new Locale("pt", "BR")));
+        String vendasStr = df.format(vendas);
+
+        return vendasStr;
+
+    }
+
     public void lancaCartao (String emp, String data, String horasStr) throws EmpregadoNaoExisteException {
         Empregado e=  empregados.get(emp);
 
@@ -243,6 +266,51 @@ public class sistemaFolha {
         // Adiciona cartão de ponto
         EmpregadoHorista horista = (EmpregadoHorista) e;
         horista.adicionarCartaoDePonto(data, horas);
+    }
+
+    public void lancaVenda (String emp, String data, String valorStr) throws EmpregadoNaoExisteException {
+        Empregado e=  empregados.get(emp);
+
+        if(emp.isEmpty()){
+            throw new RuntimeException("Identificacao do empregado nao pode ser nula.");
+        }
+        if (e == null) {
+            throw new wepayu.Exception.EmpregadoNaoExisteException();
+        }
+        if (!(e instanceof EmpregadoComissionado)) {
+            throw new RuntimeException("Empregado nao eh comissionado.");
+        }
+
+        // valida valor
+        if (valorStr == null || valorStr.trim().isEmpty()) {
+            throw new RuntimeException("Valor deve ser positivo.");
+        }
+
+        // converte vírgula para ponto
+        valorStr = valorStr.replace(',', '.');
+
+        double valor;
+        try {
+            valor = Double.parseDouble(valorStr);
+        } catch (NumberFormatException ex) {
+            throw new RuntimeException("Valor deve ser numerico.");
+        }
+
+        if (valor <= 0) {
+            throw new RuntimeException("Valor deve ser positivo.");
+        }
+
+        // valida tipo
+        if (!(e instanceof EmpregadoComissionado)) {
+            throw new RuntimeException("Empregado nao eh comissionado.");
+        }
+
+        // valida data
+        parseData(data, "Data invalida.");
+
+        // adiciona a venda
+        EmpregadoComissionado comissionado = (EmpregadoComissionado) e;
+        comissionado.adicionarResultadoDeVendas(data, valor);
     }
 }
 
