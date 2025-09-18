@@ -13,8 +13,8 @@ public class Main {
         EasyAccept.main(new String[]{facade, "tests/us2_1.txt"});  //faltou um teste para a concluir
         EasyAccept.main(new String[]{facade, "tests/us3.txt"}); //concluido*/
 
-        //EasyAccept.main(new String[]{facade, "tests/us3_1.txt"});
-        EasyAccept.main(new String[]{facade, "tests/us4.txt"});
+        EasyAccept.main(new String[]{facade, "tests/us3_1.txt"});//nao consegui rodar
+        EasyAccept.main(new String[]{facade, "tests/us4.txt"});//concluido
 //        EasyAccept.main(new String[]{facade, "tests/us4_1.txt"});
 //
 //        EasyAccept.main(new String[]{facade, "tests/us5.txt"});
