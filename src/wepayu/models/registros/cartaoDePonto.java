@@ -7,6 +7,7 @@ public class cartaoDePonto {
     private double horas;
 
     public cartaoDePonto(LocalDate data, double horas) {
+
         this.data = data;
         this.horas = horas;
     }

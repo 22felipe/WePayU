@@ -2,6 +2,8 @@ package wepayu;
 
 import wepayu.Exception.EmpregadoNaoExisteException;
 
+import java.time.LocalDate;
+
 public class Facade {
 
     private sistemaFolha sistema = new sistemaFolha();
@@ -54,5 +56,17 @@ public class Facade {
         return sistema.removerEmpregado(emp);
     }
 
+    public String getHorasNormaisTrabalhadas(String empId, String dataInicial, String dataFinal) throws EmpregadoNaoExisteException {
+        return sistema.getHorasNormaisTrabalhadas(empId, dataInicial, dataFinal);
+    }
+
+    public String getHorasExtrasTrabalhadas(String empId, String dataInicial, String dataFinal) throws EmpregadoNaoExisteException {
+        return sistema.getHorasExtrasTrabalhadas(empId, dataInicial, dataFinal);
+    }
+
+
+    public void lancaCartao(String empId, String data, String horas) throws EmpregadoNaoExisteException {
+        sistema.lancaCartao(empId, data, horas);
+    }
 
 }

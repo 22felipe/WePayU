@@ -7,12 +7,34 @@ import wepayu.models.Empregados.EmpregadoComissionado;
 import wepayu.models.Empregados.EmpregadoHorista;
 
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 
 public class sistemaFolha {
     //private   HashMap <String, Empregado> empregados =  new HashMap<>();
     private LinkedHashMap<String, Empregado> empregados = new LinkedHashMap<>();
+
+    //transformar uma string em um Localdate
+    private LocalDate parseData(String dataStr, String msgErro) {
+        try {
+            String[] partes = dataStr.split("/");
+            int dia = Integer.parseInt(partes[0]);
+            int mes = Integer.parseInt(partes[1]);
+            int ano = Integer.parseInt(partes[2]);
+            return LocalDate.of(ano, mes, dia);
+        } catch (Exception e) {
+            throw new RuntimeException(msgErro);
+        }
+    }
+
+    //Retorna um inteiro, se tiver casas decimais nulas, ou um double se tiver valores decimais
+    private String formatHoras(double valor) {
+        if(valor == 0) return "0";
+        if(valor == Math.floor(valor)) return String.valueOf((int) valor);
+        return String.valueOf(valor).replace('.', ',');  // substitui ponto por vírgula
+    }
 
     //Limpa o sistema
     public void zerarSistema() {
@@ -153,5 +175,74 @@ public class sistemaFolha {
         return emp; // retorna o ID do empregado removido
     }
 
+    public String getHorasNormaisTrabalhadas(String emp, String dataInicial, String dataFinal) {
+        Empregado e = empregados.get(emp);
+        if (!(e instanceof EmpregadoHorista)) {
+            throw new RuntimeException("Empregado nao eh horista.");
+        }
+
+        LocalDate ini = parseData(dataInicial, "Data inicial invalida.");
+        LocalDate fim = parseData(dataFinal, "Data final invalida.");
+        if (ini.isAfter(fim)) {
+            throw new RuntimeException("Data inicial nao pode ser posterior aa data final.");
+        }
+
+        double horas = ((EmpregadoHorista) e).getHorasNormaisTrabalhadas(ini, fim);
+        String horasStr = formatHoras(horas);
+        String.valueOf(horas).replace('.', ',');  // substitui ponto por vírgula
+        return horasStr;
+    }
+
+    public String getHorasExtrasTrabalhadas(String emp, String dataInicial, String dataFinal) {
+        Empregado e = empregados.get(emp);
+        if (!(e instanceof EmpregadoHorista)) {
+            throw new RuntimeException("Empregado nao eh horista.");
+        }
+
+        LocalDate ini = parseData(dataInicial, "Data inicial invalida.");
+        LocalDate fim = parseData(dataFinal, "Data final invalida.");
+        if (ini.isAfter(fim)) {
+            throw new RuntimeException("Data inicial nao pode ser posterior aa data final.");
+        }
+
+        double horas = ((EmpregadoHorista) e).getHorasExtrasTrabalhadas(ini, fim);
+        String horasStr = formatHoras(horas);
+        String.valueOf(horas).replace('.', ',');  // substitui ponto por vírgula
+        return horasStr;
+    }
+
+    public void lancaCartao (String emp, String data, String horasStr) throws EmpregadoNaoExisteException {
+        Empregado e=  empregados.get(emp);
+
+        if(emp.isEmpty()){
+            throw new RuntimeException("Identificacao do empregado nao pode ser nula.");
+        }
+        if (e == null) {
+            throw new wepayu.Exception.EmpregadoNaoExisteException();
+        }
+        if (!(e instanceof EmpregadoHorista)) {
+            throw new RuntimeException("Empregado nao eh horista.");
+        }
+
+        //checar a data
+        parseData(data, "Data invalida.");
+
+        // Valida horas e converte vírgula para ponto
+        horasStr = horasStr.replace(',', '.');
+        double horas;
+        try {
+            horas = Double.parseDouble(horasStr);
+        } catch (Exception ex) {
+            throw new RuntimeException("Horas invalidas.");
+        }
+
+        if (horas <= 0) {
+            throw new RuntimeException("Horas devem ser positivas.");
+        }
+
+        // Adiciona cartão de ponto
+        EmpregadoHorista horista = (EmpregadoHorista) e;
+        horista.adicionarCartaoDePonto(data, horas);
+    }
 }
 
